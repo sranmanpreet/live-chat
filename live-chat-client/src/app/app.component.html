@@ -1,0 +1,61 @@
+<div class="header">
+    <div class="container">
+        <a class="header-text" href="">Realtime Chat Application</a>
+    </div>
+</div>
+<div class="chat-area">
+    <div class="container">
+        <div class="columns is-multiline is-mobile is-vcentered chat-header">
+            <div class="column is-half">
+                <div class="field">
+                    <div class="control">
+                        <input class="input is-small" [(ngModel)]="user" type="text" id="username" placeholder="Enter username">
+                    </div>
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="field">
+                    <div class="control">
+                        <div class="select is-small is-fullwidth">
+                            <select name="roomInput" id="roomInput" [(ngModel)]="room">
+                                    <option value="">Select Chat Room</option>
+                                    <option value="Lobby">Lobby</option>
+                                    <option value="Hall">Hall</option>
+                                    <option value="Deluxe">Deluxe</option>
+                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-half">
+                <p class="status">Status: <span class="status-value">Available</span></p>
+                <div class="pull-right">
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="pull-right">
+                    <button type="button" class="button is-small is-primary" (click)="join()">Join</button>
+                    <button type="button" class="button is-small is-danger" (click)="leave()">Leave</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns chat-messages">
+            <div class="column">
+                <div *ngFor="let item of messageArray" class="chat-individual-message">
+                    <span><strong>{{item.user}} : </strong> {{item.message}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-mobile is-gapless message-input-area">
+            <div class="column is-four-fifths">
+                <input type="text" class="input is-small" [(ngModel)]="messageText" placeholder="Type message here...">
+            </div>
+            <div class="column is-auto">
+                <button type="button" class="button is-success is-small is-fullwidth" (click)="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>
