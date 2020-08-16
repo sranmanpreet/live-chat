@@ -44,7 +44,7 @@
 .chat-messages {
     border-bottom: 1px solid $color6;
     font-size: 0.75rem;
-    max-height: 60vh;
+    height: 60vh;
     overflow-y: auto;
     margin-bottom: 2vh;
     background: $color6;
@@ -58,5 +58,17 @@
         font-weight: 600;
         font-size: 1.1rem;
         color: $primary;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .header {
+        .container {
+            .header-text {
+                font-size: 1.2rem;
+                line-height: 30px;
+                color: $white;
+            }
+        }
     }
 }

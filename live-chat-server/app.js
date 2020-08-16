@@ -17,9 +17,27 @@ app.use('/', route);
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
-        io.emit('chat message', msg);
+    socket.on('join', function(data) {
+        //joining
+        socket.join(data.room);
+
+        console.log(data.user + 'joined the room : ' + data.room);
+
+        socket.broadcast.to(data.room).emit('new user joined', { user: data.user, message: ' has joined this room.' });
+    });
+
+
+    socket.on('leave', function(data) {
+
+        console.log(data.user + ' left the room : ' + data.room);
+
+        socket.broadcast.to(data.room).emit('left room', { user: data.user, message: ' has left this room.' });
+
+        socket.leave(data.room);
+    });
+    socket.on('message', function(data) {
+        console.log({ user: data.user, room: data.room, message: data.message });
+        io.in(data.room).emit('new message', { user: data.user, message: data.message });
     });
     socket.on('disconnect', () => {
         console.log('user disconnected');

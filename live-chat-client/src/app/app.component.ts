@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ChatService } from './shared/chat.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,65 +9,41 @@ import { ChatService } from './shared/chat.service';
 })
 export class AppComponent {
   title = 'live-chat-client';
-  user:String;
-  room:String = "";
-  messageText:String;
-  messageArray:Array<{user:String,message:String}> = [];
-  constructor(private _chatService:ChatService){
-
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
-    this.messageArray.push({user: "joe", message: "hiii"});
-    this.messageArray.push({user: "manpreet", message: "hello"});
+  user: String;
+  room: String = "";
+  messageText: String;
+  messageArray: Array<{ user: String, message: String }> = [];
+  constructor(private _chatService: ChatService) {
     this._chatService.newUserJoined()
-      .subscribe(data=> this.messageArray.push(data));
+      .subscribe(data => this.messageArray.push(data));
 
 
-      this._chatService.userLeftRoom()
-      .subscribe(data=>this.messageArray.push(data));
+    this._chatService.userLeftRoom()
+      .subscribe(data => this.messageArray.push(data));
 
-      this._chatService.newMessageReceived()
-      .subscribe(data=>this.messageArray.push(data));
+    this._chatService.newMessageReceived()
+      .subscribe(data => this.messageArray.push(data));
   }
 
-  join(){
-      this._chatService.joinRoom({user:this.user, room:this.room});
+  join() {
+    this._chatService.joinRoom({ user: this.user, room: this.room });
+    this.clearMessageBox();
   }
 
-  leave(){
-      this._chatService.leaveRoom({user:this.user, room:this.room});
+  leave() {
+    this._chatService.leaveRoom({ user: this.user, room: this.room });
+    this.clearMessageBox();
   }
 
-  sendMessage()
-  {
-      this._chatService.sendMessage({user:this.user, room:this.room, message:this.messageText});
+  sendMessage(f: NgForm) {
+    const form = f.value;
+    if(form.messageText && form.user && form.room){
+      this.clearMessageBox();
+      this._chatService.sendMessage({ user: form.user, room: form.room, message: form.messageText });
+    }
+  }
+
+  clearMessageBox(){
+    this.messageText = "";
   }
 }
