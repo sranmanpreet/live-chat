@@ -8,7 +8,10 @@ const route = require('./route/route');
 
 var app = express();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+    pingInterval: 10000,
+    pingTimeout: 5000
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -36,7 +39,6 @@ io.on('connection', (socket) => {
         socket.leave(data.room);
     });
     socket.on('message', function(data) {
-        console.log({ user: data.user, room: data.room, message: data.message });
         io.in(data.room).emit('new message', { user: data.user, message: data.message });
     });
     socket.on('disconnect', () => {

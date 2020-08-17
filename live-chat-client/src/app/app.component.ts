@@ -13,6 +13,7 @@ export class AppComponent {
   room: String = "";
   messageText: String;
   messageArray: Array<{ user: String, message: String }> = [];
+  status: String = "Not Joined";
   constructor(private _chatService: ChatService) {
     this._chatService.newUserJoined()
       .subscribe(data => this.messageArray.push(data));
@@ -27,11 +28,13 @@ export class AppComponent {
 
   join() {
     this._chatService.joinRoom({ user: this.user, room: this.room });
+    this.status = "Joined " + this.room;
     this.clearMessageBox();
   }
 
   leave() {
     this._chatService.leaveRoom({ user: this.user, room: this.room });
+    this.status = "Not Joined";
     this.clearMessageBox();
   }
 
